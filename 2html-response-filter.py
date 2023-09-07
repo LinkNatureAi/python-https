@@ -12,18 +12,16 @@ def extract_p_tags(data):
     end_tag = "</p>"
     start = data.find(start_tag)
     end = data.find(end_tag)
-    
-    if start != -1 and end != -1:
-        return data[start+len(start_tag):end]
-    else:
-        return None
+
+    while start != -1 and end != -1:
+        p_data = data[start+len(start_tag):end]
+        print("Received data within <p> tags:", p_data)
+        start = data.find(start_tag, end)
+        end = data.find(end_tag, start)
 
 def print_received_data():
     data = make_https_request()
-    p_data = extract_p_tags(data)
-    
-    if p_data is not None:
-        print("Received data:", p_data)
+    extract_p_tags(data)
 
 while True:
     try:
@@ -34,5 +32,5 @@ while True:
     # Free up memory (optional)
     gc.collect()
 
-    # Wait for 2 seconds
-    time.sleep(2)
+    # Wait for 3 seconds
+    time.sleep(3)
